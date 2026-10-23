@@ -1,0 +1,16 @@
+github:
+  description: "Noisy Secrets"
+  homepage: https://tooling.apache.org/noisy-secrets.html
+  dependabot_alerts: true
+  dependabot_updates: false
+  rulesets:
+    - name: "Main branch"
+      type: branch
+      branches:
+        includes:
+          - "main"
+
+notifications:
+  commits: commits@tooling.apache.org
+  issues: issues@tooling.apache.org
+  pullrequests: issues@tooling.apache.org

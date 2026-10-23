@@ -1,0 +1,30 @@
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14"]
+build-backend = "uv_build"
+
+[project]
+name = "noisysecrets"
+version = "0.0.1.dev0+dev"
+description = "Noisy Secrets: self-verifying bearer credentials that are easy to detect when leaked"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "ASF Tooling", email = "dev@tooling.apache.org" }]
+
+[project.urls]
+Source = "https://github.com/apache/tooling-noisy-secrets"
+Specification = "https://tooling.apache.org/noisy-secrets.html"
+
+[dependency-groups]
+dev = ["prek", "pyright", "pytest", "ruff", "zizmor"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["C90", "E", "F", "I", "N", "RUF", "S", "UP", "W"]
+per-file-ignores = { "tests/*" = ["S101"] }
+
+[tool.uv]
+exclude-newer = "5 days"

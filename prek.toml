@@ -1,0 +1,71 @@
+default_install_hook_types = ["pre-commit", "pre-push"]
+default_stages = ["pre-commit"]
+
+[[repos]]
+repo = "builtin"
+
+[[repos.hooks]]
+id = "check-added-large-files"
+
+[[repos.hooks]]
+id = "check-merge-conflict"
+args = ["--assume-in-merge"]
+
+[[repos.hooks]]
+id = "check-toml"
+
+[[repos.hooks]]
+id = "check-yaml"
+
+[[repos.hooks]]
+id = "detect-private-key"
+
+[[repos.hooks]]
+id = "require-pattern"
+name = "licence header"
+args = ["Licensed to the Apache Software Foundation"]
+files = '\.py$'
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "ruff-check"
+name = "ruff check"
+language = "system"
+entry = "uv run --locked ruff check"
+types = ["python"]
+
+[[repos.hooks]]
+id = "ruff-format"
+name = "ruff format"
+language = "system"
+entry = "uv run --locked ruff format --check"
+types = ["python"]
+
+[[repos.hooks]]
+id = "pyright"
+name = "pyright"
+language = "system"
+entry = "uv run --locked pyright"
+types = ["python"]
+pass_filenames = false
+stages = ["pre-push"]
+
+[[repos.hooks]]
+id = "zizmor"
+name = "zizmor"
+language = "system"
+entry = "uv run --locked zizmor --offline .github"
+files = '^\.github/'
+pass_filenames = false
+stages = ["pre-push"]
+
+[[repos.hooks]]
+id = "pytest"
+name = "pytest"
+language = "system"
+entry = "uv run --locked pytest -q"
+always_run = true
+pass_filenames = false
+stages = ["pre-push"]
