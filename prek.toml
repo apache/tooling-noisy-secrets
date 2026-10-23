@@ -30,6 +30,16 @@ files = '\.py$'
 repo = "local"
 
 [[repos.hooks]]
+id = "version"
+name = "version scheme"
+language = "python"
+language_version = "3.12"
+entry = "python -I scripts/check_version.py"
+always_run = true
+pass_filenames = false
+stages = ["pre-commit", "pre-push"]
+
+[[repos.hooks]]
 id = "ruff-check"
 name = "ruff check"
 language = "system"

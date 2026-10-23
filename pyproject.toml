@@ -24,7 +24,7 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["C90", "E", "F", "I", "N", "RUF", "S", "UP", "W"]
-per-file-ignores = { "tests/*" = ["S101"] }
+per-file-ignores = { "scripts/*" = ["S603", "S607"], "tests/*" = ["S101"] }
 
 [tool.uv]
 exclude-newer = "5 days"
