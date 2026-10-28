@@ -17,30 +17,37 @@
 
 import pathlib
 import re
+import subprocess
 import sys
 import tomllib
 from typing import Final
 
-_SETUP_UV: Final = re.compile(r"uses: astral-sh/setup-uv@[0-9a-f]{40}[^\n]*\n\s+with:\n\s+version: \"([0-9.]+)\"")
+_SETUP_UV: Final = re.compile(r"uses: astral-sh/setup-uv@([0-9a-f]{40})[^\n]*\n\s+with:\n\s+version: \"latest-known\"")
+_UV_BUILD: Final = re.compile(r"uv_build>=(([0-9]+)\.([0-9]+)\.[0-9]+),<([0-9]+\.[0-9]+)")
+
+
+def _version(text: str) -> tuple[int, ...]:
+    return tuple(int(part) for part in text.split("."))
 
 
 def main() -> None:
-    versions = set()
+    commits = set()
     workflows = pathlib.Path(".github/workflows")
     for workflow in sorted([*workflows.glob("*.yml"), *workflows.glob("*.yaml")]):
         text = workflow.read_text()
         pinned = _SETUP_UV.findall(text)
         if text.count("astral-sh/setup-uv@") != len(pinned):
-            sys.exit(f"ERROR: {workflow}: every setup-uv step must pin a uv version directly after with:")
-        versions.update(pinned)
-    if len(versions) != 1:
-        sys.exit(f"ERROR: the workflows must all pin the same uv version, not {sorted(versions)}")
-    version = versions.pop()
-    major, minor, _ = version.split(".")
-    expected = [f"uv_build>={version},<{major}.{int(minor) + 1}"]
+            sys.exit(f"ERROR: {workflow}: every setup-uv step must use version latest-known directly after with:")
+        commits.update(pinned)
+    if len(commits) != 1:
+        sys.exit(f"ERROR: the workflows must all use the same setup-uv commit, not {sorted(commits)}")
     requires = tomllib.loads(pathlib.Path("pyproject.toml").read_text())["build-system"]["requires"]
-    if requires != expected:
-        sys.exit(f"ERROR: pyproject.toml build requirement must be {expected}, not {requires}")
+    match = _UV_BUILD.fullmatch(requires[0]) if (len(requires) == 1) else None
+    if (match is None) or (match[4] != f"{match[2]}.{int(match[3]) + 1}"):
+        sys.exit(f"ERROR: pyproject.toml build requirement must be uv_build>=X.Y.Z,<X.(Y+1), not {requires}")
+    uv = subprocess.run(["uv", "self", "version", "--short"], capture_output=True, check=True, text=True).stdout.strip()
+    if not (_version(match[1]) <= _version(uv) < _version(match[4])):
+        sys.exit(f"ERROR: setup-uv installs uv {uv}, which {requires[0]} does not allow")
 
 
 if __name__ == "__main__":
