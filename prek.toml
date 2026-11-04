@@ -8,11 +8,26 @@ repo = "builtin"
 id = "check-added-large-files"
 
 [[repos.hooks]]
+id = "check-case-conflict"
+
+[[repos.hooks]]
+id = "check-executables-have-shebangs"
+
+[[repos.hooks]]
+id = "check-illegal-windows-names"
+
+[[repos.hooks]]
 id = "check-merge-conflict"
 args = ["--assume-in-merge"]
 
 [[repos.hooks]]
+id = "check-shebang-scripts-are-executable"
+
+[[repos.hooks]]
 id = "check-toml"
+
+[[repos.hooks]]
+id = "check-vcs-permalinks"
 
 [[repos.hooks]]
 id = "check-yaml"
@@ -21,10 +36,22 @@ id = "check-yaml"
 id = "detect-private-key"
 
 [[repos.hooks]]
+id = "end-of-file-fixer"
+
+[[repos.hooks]]
+id = "fix-byte-order-marker"
+
+[[repos.hooks]]
+id = "mixed-line-ending"
+
+[[repos.hooks]]
 id = "require-pattern"
 name = "licence header"
 args = ["Licensed to the Apache Software Foundation"]
 files = '\.py$'
+
+[[repos.hooks]]
+id = "trailing-whitespace"
 
 [[repos]]
 repo = "local"
