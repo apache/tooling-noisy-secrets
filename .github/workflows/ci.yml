@@ -38,7 +38,7 @@ jobs:
           PRE_COMMIT_FROM_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
           PRE_COMMIT_TO_REF: ${{ github.sha }}
       - run: uv run --locked python -I scripts/check_uv_pins.py
-      - run: uv run --locked prek run --all-files
+      - run: uv run --locked prek run --show-diff-on-failure --color=always --all-files
         env:
           PREK_SKIP: version
       - run: uv run --locked pyright
