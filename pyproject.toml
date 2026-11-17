@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "noisysecrets"
-version = "0.0.1"
+version = "0.0.2.dev0+dev"
 description = "Noisy Secrets: self-verifying bearer credentials that are easy to detect when leaked"
 readme = "README.md"
 requires-python = ">=3.12"
