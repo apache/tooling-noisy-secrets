@@ -1,6 +1,8 @@
 github:
   description: "Noisy Secrets"
   homepage: https://tooling.apache.org/noisy-secrets.html
+  features:
+    issues: true
   dependabot_alerts: true
   dependabot_updates: false
   rulesets:
