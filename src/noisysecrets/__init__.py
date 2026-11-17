@@ -23,7 +23,6 @@ __all__ = ["NoisySecret", "create", "verify"]
 
 # This file is intended for standalone use
 # It follows the order of the Noisy Secrets specification
-# Therefore it breaks some ATR coding conventions
 
 # Constants not based on custom types
 
@@ -135,7 +134,7 @@ def construct_padded_namespace(namespace: Namespace) -> PaddedNamespace:
 
 def construct_payload() -> Payload:
     payload = []
-    for i in range(32):
+    for _ in range(32):
         payload.append(secrets.choice(BASE32_ALPHABET))
     return Payload(PayloadString(bytes(payload)))
 
